@@ -1,7 +1,9 @@
 ﻿using DBContext.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Configuration;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,16 +17,13 @@ public class DBConnection
     public DBConnection( IConfiguration configuration )
     {
         _configuration = configuration;
-        var connectionString = _configuration.GetConnectionString( "Database:DefaultConnection" );
-        var databaseName = _configuration["Database:dbName"];
-        var collectionName = _configuration[ "Database:dbCollectionName" ];
 
+        var connectionString = _configuration.GetConnectionString( "Database:ConnectionStrings" );
+        var databaseName = _configuration[ "Database:dbName" ];
+        var collectionName = _configuration[ "Database:dbCollectionName" ];
         var client = new MongoClient( connectionString );
         _db = client.GetDatabase( databaseName );
         _db.GetCollection<Recipe>( collectionName );
 
     }
-    //TODO: CRUD Operaions connected to MongoDB => API
-
-
 }
